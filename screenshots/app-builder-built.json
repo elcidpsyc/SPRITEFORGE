@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "SPRITEFORGE",
+      "hasCanvas": true,
+      "bodyTextLen": 2124,
+      "bodyTextHash": "35d5df1a4a699a08f8640936f7c6b45cff8c569c957d6dacae971becb09df55e",
+      "bodyTextPrefix": "SPRITEFORGE MEDIEVAL 64×64 · 4 dirs · atlas 1.0 Gerador de Image",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "SPRITEFORGE",
+      "hasCanvas": true,
+      "bodyTextLen": 1976,
+      "bodyTextHash": "75fea4ddc5fec1fe3f3042a042f1a1b993a850fd94850c9c698f95de16fb8795",
+      "bodyTextPrefix": "SPRITEFORGE MEDIEVAL Gerador Guerreiros Cenário Inimigos Montage",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

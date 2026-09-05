@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cinzel", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-bg: #0b0c0e;
+  --color-bg-deep: #070809;
+  --color-surface: #14161a;
+  --color-surface-2: #1a1d23;
+  --color-surface-3: #22262e;
+  --color-fg: #e8e6e1;
+  --color-muted: #8b909a;
+  --color-subtle: #5c616b;
+  --color-border: #2a2d33;
+  --color-border-strong: #3a3f48;
+  --color-gold: #e4b84a;
+  --color-gold-dim: #b8923a;
+  --color-gold-ink: #1a1408;
+  --color-danger: #c41e3a;
+  --color-easy: #4ade80;
+  --color-mid: #e4b84a;
+  --color-hard: #f97316;
+  --color-master: #c084fc;
+  --color-rare: #60a5fa;
+  --color-epic: #a78bfa;
+  --color-immortal: #f43f5e;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-gold: 0 0 0 1px #e4b84a;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+  body {
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(1200px 500px at 50% -10%, rgba(228, 184, 74, 0.05), transparent 55%),
+      linear-gradient(180deg, #0d0e11 0%, #0b0c0e 40%, #090a0c 100%);
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@utility pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+}
+
+.checker-bg {
+  background-color: #1a1d23;
+  background-image:
+    linear-gradient(45deg, #121418 25%, transparent 25%),
+    linear-gradient(-45deg, #121418 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #121418 75%),
+    linear-gradient(-45deg, transparent 75%, #121418 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+}
+
+.grass-bg {
+  background: radial-gradient(circle at 30% 30%, #3d6b32, #1e3a1c 70%);
+}
+.sand-bg {
+  background: radial-gradient(circle at 30% 30%, #c4a574, #8a6a3e 70%);
+}
+.stone-bg {
+  background: radial-gradient(circle at 40% 20%, #6b7280, #374151 70%);
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0.45;
+}
+
+@keyframes forge-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,8 @@
+- Projeto: plataforma web SPRITEFORGE para criar spritesheets de personagens de minigame medieval (pixel art). [2026-09-05]
+- Referências visuais no artifacts: sprites 4 direções (D/U/R/L), ações de combate (walk/run/attack/guard/bow/dagger/hammer), sheets 8 frames x 4 rows, UI dark SPRITEFORGE e Medieval Armory. [2026-09-05]
+- Produto alvo nas mockups: tabs 1 Gerador de Imagem, 2 Guerreiros Medievais (10 classes), 3 Cenário Survivor & Magias, 4 Inimigos & Bosses, 5 Base & Montagem Modular, 6 Equipamentos. [2026-09-05]
+- Matriz de 7 animações: Caminhada, Corrida, Ataque, Defesa, Dash/Esquiva, Dano, Morte. Export PNG transparente, JPG com fundo, SVG vetorial. Preview com FPS, zoom, grid 32px, onion skin, hitbox. [2026-09-05]
+- Dual view de equipamento: sprite in-game + ícone HUD 32x32. Raridades Básico/Raro/Épico/Lendário/Imortal. Armaduras Leve/Média/Pesada. [2026-09-05]
+- Build será feito em OUTRO chat; este chat só definiu plano e brief. [2026-09-05]
+- Pacote para anexar no chat novo: artifacts/spriteforge-brief/ (PROMPT-NOVO-CHAT.md, SPEC, ENGINES-EXPORT, atlas.example.json, roster.v1.json). [2026-09-05]
+- Decisões travadas no brief: célula 64x64, 4 dirs, 7 ações, paper-doll v1 (sem IA como source of truth), herói piloto = Templário, stack Next.js+TS+Canvas, Godot 4 export prioritário + Phaser/Pixi/Unity. [2026-09-05]
