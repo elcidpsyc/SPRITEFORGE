@@ -1,5 +1,5 @@
-import { ACTION_META, type ActionId } from "./contract";
-import type { Pose } from "./types";
+import { ACTION_META, type ActionId } from "./contract.ts";
+import type { Pose } from "./types.ts";
 
 const idle: Pose = {
   bob: 0,
@@ -131,6 +131,17 @@ export function poseFor(action: ActionId, frame: number): Pose {
   const n = ACTION_META[action].frames;
   const i = ((frame % n) + n) % n;
   return table[i] ?? idle;
+}
+
+/**
+ * Pose for composeFrame(): identical to poseFor() except `cape` is taken
+ * from the previous frame, giving the cape one frame of secondary-motion
+ * lag behind the body it's attached to.
+ */
+export function poseForCompose(action: ActionId, frame: number): Pose {
+  const current = poseFor(action, frame);
+  const prevCape = poseFor(action, frame - 1).cape;
+  return { ...current, cape: prevCape };
 }
 
 export { mix };

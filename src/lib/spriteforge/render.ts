@@ -1,6 +1,6 @@
-import { CELL, type ActionId, type Direction } from "./contract";
-import { poseFor } from "./poses";
-import type { Character, CharacterKit, Pose } from "./types";
+import { CELL, type ActionId, type Direction } from "./contract.ts";
+import { poseFor } from "./poses.ts";
+import type { Character, CharacterKit, Pose } from "./types.ts";
 
 export type RGBA = readonly [number, number, number, number];
 
@@ -68,7 +68,7 @@ export class Pix {
   }
 }
 
-function strokeOutline(p: Pix, color: RGBA = OUT) {
+export function strokeOutline(p: Pix, color: RGBA = OUT) {
   const orig = new Uint8ClampedArray(p.data);
   const aAt = (x: number, y: number) => {
     if (x < 0 || y < 0 || x >= p.w || y >= p.h) return 0;
@@ -404,7 +404,7 @@ function drawVfx(p: Pix, dir: Direction, pose: Pose, y0: number) {
   }
 }
 
-function applyFlash(p: Pix, amount: number) {
+export function applyFlash(p: Pix, amount: number) {
   if (amount <= 0) return;
   for (let i = 0; i < p.data.length; i += 4) {
     if (p.data[i + 3]! < 8) continue;

@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Mountain, Skull, Sparkles, Layers, type LucideIcon } from "lucide-react";
-import { LAYERS } from "@/lib/spriteforge/contract";
+import { composeFrame, type PartSet } from "@/lib/spriteforge/compose";
+import { DIRECTIONS, LAYERS, type Direction } from "@/lib/spriteforge/contract";
 import { EQUIPMENT, FAMILY_LABEL, RARITY_LABEL } from "@/lib/spriteforge/equipment";
+import { poseForCompose } from "@/lib/spriteforge/poses";
 import { renderFrame } from "@/lib/spriteforge/render";
+import { getCachedParts, getCachedPartsManifest } from "@/lib/spriteforge/sheet";
 import { useStudio } from "@/lib/spriteforge/store";
 import { Badge, GhostBtn, Panel, RARITY_CLASS } from "./bits";
 import { Portrait } from "./PixelView";
@@ -118,18 +121,50 @@ export function TabInimigos() {
 
 export function TabMontagem() {
   const character = useStudio((s) => s.character());
+  const packEpoch = useStudio((s) => s.packEpoch);
   const pix = useMemo(() => renderFrame(character, "walk", "down", 0), [character]);
+
+  const manifest = useMemo(
+    () => getCachedPartsManifest(character.id),
+    [character.id, packEpoch],
+  );
+  const partsByDirection = useMemo(
+    () => getCachedParts(character.id),
+    [character.id, packEpoch],
+  );
+
+  const [direction, setDirection] = useState<Direction>("down");
+  const [showWeapon, setShowWeapon] = useState(true);
+  const [showShield, setShowShield] = useState(true);
+
+  const previewPix = useMemo(() => {
+    if (!partsByDirection) return null;
+    const { parts, anchors } = partsByDirection[direction];
+    const filtered: PartSet = { ...parts };
+    if (!showWeapon) delete filtered.weapon;
+    if (!showShield) delete filtered.shield;
+    return composeFrame(filtered, direction, poseForCompose("walk", 0), anchors);
+  }, [partsByDirection, direction, showWeapon, showShield]);
+
+  const dirParts = manifest?.directions[direction];
+
   return (
     <Soon
       icon={Layers}
       title="Base & Montagem Modular"
-      copy="Paper-doll em 8 layers. Trocar equipamento não move o pivot. A montagem já alimenta o player da aba 2."
+      copy={
+        manifest
+          ? "Paper-doll real: partes extraídas da referência (tools/extract_parts.py) e recompostas por pose em compose.ts. Trocar weapon/shield não move o pivot (32, 56)."
+          : "Paper-doll em 8 layers. Trocar equipamento não move o pivot. A montagem já alimenta o player da aba 2."
+      }
     >
       <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <Panel className="flex flex-col items-center gap-3">
-          {character.id === "templar" ? (
+          {previewPix ? (
+            <Portrait pix={previewPix} scale={3} />
+          ) : character.id === "templar" ? (
             <img
-              src="/packs/templar-v4/thumbs/idle_down.png?v=5"
+              src="/packs/templar-v5/thumbs/idle_down.png?v=5"
               alt=""
               width={192}
               height={192}
@@ -140,22 +175,62 @@ export function TabMontagem() {
             <Portrait pix={pix} scale={3} />
           )}
           <p className="font-display text-sm text-fg">{character.name}</p>
+          {manifest && (
+            <>
+              <div className="flex flex-wrap justify-center gap-1">
+                {DIRECTIONS.map((d) => (
+                  <GhostBtn key={d} active={direction === d} onClick={() => setDirection(d)}>
+                    {d}
+                  </GhostBtn>
+                ))}
+              </div>
+              <div className="flex flex-wrap justify-center gap-1">
+                <GhostBtn active={showWeapon} onClick={() => setShowWeapon((v) => !v)}>
+                  Weapon
+                </GhostBtn>
+                <GhostBtn active={showShield} onClick={() => setShowShield((v) => !v)}>
+                  Shield
+                </GhostBtn>
+              </div>
+            </>
+          )}
         </Panel>
         <Panel>
-          <ol className="flex flex-col gap-2">
-            {LAYERS.map((l, i) => (
-              <li
-                key={l}
-                className="flex items-center justify-between rounded-md border border-border bg-surface-2 px-3 py-2"
-              >
-                <span className="font-mono text-xs text-muted">{i}</span>
-                <span className="font-sans text-sm text-fg">{l}</span>
-                <span className="font-mono text-[11px] text-subtle">
-                  {character.layers[l] ?? "kit default"}
-                </span>
-              </li>
-            ))}
-          </ol>
+          {dirParts ? (
+            <ol className="flex flex-col gap-2">
+              {(Object.keys(dirParts) as (keyof typeof dirParts)[]).map((layer) => {
+                const entry = dirParts[layer];
+                return (
+                  <li
+                    key={layer}
+                    className="flex items-center justify-between gap-2 rounded-md border border-border bg-surface-2 px-3 py-2"
+                  >
+                    <span className="font-sans text-sm text-fg">{layer}</span>
+                    <span className="font-mono text-[11px] text-subtle">
+                      {entry.bbox
+                        ? `${entry.px}px · x[${entry.bbox[0]}-${entry.bbox[2]}] y[${entry.bbox[1]}-${entry.bbox[3]}]`
+                        : "vazio nesta direção"}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          ) : (
+            <ol className="flex flex-col gap-2">
+              {LAYERS.map((l, i) => (
+                <li
+                  key={l}
+                  className="flex items-center justify-between rounded-md border border-border bg-surface-2 px-3 py-2"
+                >
+                  <span className="font-mono text-xs text-muted">{i}</span>
+                  <span className="font-sans text-sm text-fg">{l}</span>
+                  <span className="font-mono text-[11px] text-subtle">
+                    {character.layers[l] ?? "kit default"}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
         </Panel>
       </div>
     </Soon>

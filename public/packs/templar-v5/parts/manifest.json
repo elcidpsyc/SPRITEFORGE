@@ -1,0 +1,591 @@
+{
+  "cell": {
+    "w": 64,
+    "h": 64
+  },
+  "pivot": {
+    "x": 32,
+    "y": 56
+  },
+  "directions": {
+    "down": {
+      "head": {
+        "file": "parts/down/head.png",
+        "bbox": [
+          22,
+          14,
+          42,
+          35
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 209
+      },
+      "torso": {
+        "file": "parts/down/torso.png",
+        "bbox": [
+          22,
+          16,
+          40,
+          45
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 188
+      },
+      "cape": {
+        "file": "parts/down/cape.png",
+        "bbox": null,
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 0
+      },
+      "shield": {
+        "file": "parts/down/shield.png",
+        "bbox": [
+          36,
+          24,
+          51,
+          53
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 374
+      },
+      "weapon": {
+        "file": "parts/down/weapon.png",
+        "bbox": [
+          13,
+          40,
+          22,
+          54
+        ],
+        "anchor": {
+          "x": 20,
+          "y": 42
+        },
+        "px": 65
+      },
+      "legs_l": {
+        "file": "parts/down/legs_l.png",
+        "bbox": [
+          23,
+          46,
+          31,
+          53
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 53
+      },
+      "legs_r": {
+        "file": "parts/down/legs_r.png",
+        "bbox": [
+          32,
+          46,
+          40,
+          55
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 33
+      }
+    },
+    "up": {
+      "head": {
+        "file": "parts/up/head.png",
+        "bbox": [
+          17,
+          11,
+          37,
+          35
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 261
+      },
+      "torso": {
+        "file": "parts/up/torso.png",
+        "bbox": [
+          17,
+          16,
+          31,
+          44
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 36
+      },
+      "cape": {
+        "file": "parts/up/cape.png",
+        "bbox": [
+          16,
+          29,
+          35,
+          51
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 282
+      },
+      "shield": {
+        "file": "parts/up/shield.png",
+        "bbox": [
+          14,
+          26,
+          16,
+          47
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 43
+      },
+      "weapon": {
+        "file": "parts/up/weapon.png",
+        "bbox": [
+          30,
+          26,
+          49,
+          55
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 28
+        },
+        "px": 283
+      },
+      "legs_l": {
+        "file": "parts/up/legs_l.png",
+        "bbox": [
+          17,
+          46,
+          29,
+          53
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 27
+      },
+      "legs_r": {
+        "file": "parts/up/legs_r.png",
+        "bbox": null,
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 0
+      }
+    },
+    "right": {
+      "head": {
+        "file": "parts/right/head.png",
+        "bbox": [
+          22,
+          12,
+          40,
+          35
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 206
+      },
+      "torso": {
+        "file": "parts/right/torso.png",
+        "bbox": [
+          17,
+          15,
+          38,
+          45
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 51
+      },
+      "cape": {
+        "file": "parts/right/cape.png",
+        "bbox": [
+          18,
+          37,
+          22,
+          46
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 17
+      },
+      "shield": {
+        "file": "parts/right/shield.png",
+        "bbox": [
+          36,
+          23,
+          48,
+          51
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 272
+      },
+      "weapon": {
+        "file": "parts/right/weapon.png",
+        "bbox": [
+          18,
+          30,
+          34,
+          51
+        ],
+        "anchor": {
+          "x": 30,
+          "y": 30
+        },
+        "px": 292
+      },
+      "legs_l": {
+        "file": "parts/right/legs_l.png",
+        "bbox": [
+          17,
+          46,
+          20,
+          52
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 3
+      },
+      "legs_r": {
+        "file": "parts/right/legs_r.png",
+        "bbox": [
+          32,
+          46,
+          39,
+          55
+        ],
+        "anchor": {
+          "x": 32,
+          "y": 56
+        },
+        "px": 31
+      }
+    },
+    "left": {
+      "head": {
+        "file": "parts/left/head.png",
+        "bbox": [
+          23,
+          12,
+          41,
+          35
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 206,
+        "mirroredFrom": "right"
+      },
+      "torso": {
+        "file": "parts/left/torso.png",
+        "bbox": [
+          25,
+          15,
+          46,
+          45
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 51,
+        "mirroredFrom": "right"
+      },
+      "cape": {
+        "file": "parts/left/cape.png",
+        "bbox": [
+          41,
+          37,
+          45,
+          46
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 17,
+        "mirroredFrom": "right"
+      },
+      "shield": {
+        "file": "parts/left/shield.png",
+        "bbox": [
+          15,
+          23,
+          27,
+          51
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 272,
+        "mirroredFrom": "right"
+      },
+      "weapon": {
+        "file": "parts/left/weapon.png",
+        "bbox": [
+          29,
+          30,
+          45,
+          51
+        ],
+        "anchor": {
+          "x": 33,
+          "y": 30
+        },
+        "px": 292,
+        "mirroredFrom": "right"
+      },
+      "legs_l": {
+        "file": "parts/left/legs_l.png",
+        "bbox": [
+          43,
+          46,
+          46,
+          52
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 3,
+        "mirroredFrom": "right"
+      },
+      "legs_r": {
+        "file": "parts/left/legs_r.png",
+        "bbox": [
+          24,
+          46,
+          31,
+          55
+        ],
+        "anchor": {
+          "x": 31,
+          "y": 56
+        },
+        "px": 31,
+        "mirroredFrom": "right"
+      }
+    }
+  },
+  "vfx": {
+    "down": [
+      {
+        "frame": 4,
+        "file": "parts/vfx/slash_down_4.png",
+        "bbox": [
+          13,
+          28,
+          31,
+          55
+        ],
+        "px": 107
+      },
+      {
+        "frame": 5,
+        "file": "parts/vfx/slash_down_5.png",
+        "bbox": [
+          14,
+          14,
+          40,
+          52
+        ],
+        "px": 89
+      },
+      {
+        "frame": 6,
+        "file": "parts/vfx/slash_down_6.png",
+        "bbox": [
+          22,
+          35,
+          27,
+          51
+        ],
+        "px": 7
+      }
+    ],
+    "up": [
+      {
+        "frame": 4,
+        "file": "parts/vfx/slash_up_4.png",
+        "bbox": [
+          30,
+          10,
+          50,
+          53
+        ],
+        "px": 11
+      },
+      {
+        "frame": 5,
+        "file": "parts/vfx/slash_up_5.png",
+        "bbox": [
+          19,
+          6,
+          48,
+          50
+        ],
+        "px": 62
+      },
+      {
+        "frame": 6,
+        "file": "parts/vfx/slash_up_6.png",
+        "bbox": [
+          30,
+          16,
+          49,
+          53
+        ],
+        "px": 10
+      }
+    ],
+    "right": [
+      {
+        "frame": 4,
+        "file": "parts/vfx/slash_right_4.png",
+        "bbox": [
+          25,
+          20,
+          51,
+          55
+        ],
+        "px": 102
+      },
+      {
+        "frame": 5,
+        "file": "parts/vfx/slash_right_5.png",
+        "bbox": [
+          38,
+          13,
+          50,
+          54
+        ],
+        "px": 103
+      }
+    ],
+    "left": [
+      {
+        "frame": 4,
+        "file": "parts/vfx/slash_left_4.png",
+        "bbox": [
+          12,
+          20,
+          38,
+          55
+        ],
+        "px": 102,
+        "mirroredFrom": "right"
+      },
+      {
+        "frame": 5,
+        "file": "parts/vfx/slash_left_5.png",
+        "bbox": [
+          13,
+          13,
+          25,
+          54
+        ],
+        "px": 103,
+        "mirroredFrom": "right"
+      }
+    ]
+  },
+  "manualRegions": {
+    "note": "shield e weapon usam caixas retangulares fixas (sem filtro de cor) por direção — a mão/braço que segura cada peça tem a mesma cor de aço da armadura, então a máscara por cor sozinha misturava shield/weapon com torso. down.cape é vazio de propósito (a referência não mostra a capa de frente).",
+    "shieldBox": {
+      "down": [
+        36,
+        24,
+        52,
+        53
+      ],
+      "up": [
+        5,
+        22,
+        16,
+        52
+      ],
+      "right": [
+        36,
+        23,
+        51,
+        51
+      ]
+    },
+    "weaponBox": {
+      "down": [
+        10,
+        40,
+        22,
+        56
+      ],
+      "up": [
+        30,
+        26,
+        51,
+        56
+      ],
+      "right": [
+        18,
+        30,
+        34,
+        51
+      ]
+    },
+    "capeBox": {
+      "down": null,
+      "up": null,
+      "right": [
+        8,
+        30,
+        24,
+        46
+      ]
+    }
+  },
+  "knownLimitations": [
+    {
+      "direction": "right",
+      "part": "weapon",
+      "issue": "a espada cruza o torso na pose fotografada e usa o mesmo tom de aço da armadura — a caixa (WEAPON_BOX.right) foi apertada em 2 tentativas mas ainda inclui parte do braço/torso, não é uma silhueta limpa só da lâmina. 'left' herda a mesma limitação por espelhamento."
+    }
+  ]
+}

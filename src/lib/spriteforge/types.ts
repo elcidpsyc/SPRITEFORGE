@@ -1,4 +1,4 @@
-import type { ActionId, Direction, LayerId } from "./contract";
+import type { ActionId, Direction, LayerId } from "./contract.ts";
 
 export type Difficulty = "facil" | "medio" | "dificil" | "mestre";
 export type Rarity = "basico" | "raro" | "epico" | "lendario" | "imortal";
@@ -122,4 +122,33 @@ export type Pose = {
   smear: number;
   flash: number;
   vfx: number;
+};
+
+// --- paper-doll parts manifest (tools/extract_parts.py output) ---
+
+export type PartLayerId = "head" | "torso" | "cape" | "shield" | "weapon" | "legs_l" | "legs_r";
+
+export type PartManifestEntry = {
+  file: string;
+  bbox: [number, number, number, number] | null;
+  anchor: { x: number; y: number };
+  px: number;
+  mirroredFrom?: "right";
+};
+
+export type VfxManifestEntry = {
+  frame: number;
+  file: string;
+  bbox: [number, number, number, number] | null;
+  px: number;
+  mirroredFrom?: "right";
+};
+
+export type PartsManifest = {
+  cell: { w: number; h: number };
+  pivot: { x: number; y: number };
+  directions: Record<Direction, Record<PartLayerId, PartManifestEntry>>;
+  vfx: Record<Direction, VfxManifestEntry[]>;
+  manualRegions?: unknown;
+  knownLimitations?: unknown;
 };

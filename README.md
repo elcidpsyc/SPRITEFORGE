@@ -26,3 +26,21 @@ novo sobre a mesma referência produz bytes idênticos.
 
 Os outros nove guerreiros usam o renderer procedural em
 `src/lib/spriteforge/render.ts` (sem pack de imagem).
+
+## Paper-doll do Templário (`public/packs/templar-v5/`)
+
+O v5 substitui a transformação do frame inteiro (v4) por composição de
+**partes** (`shadow, legs, torso, cape, head, weapon, shield, vfx`) por pose,
+via `src/lib/spriteforge/compose.ts`. O app usa isso automaticamente
+(`PARTS_FOLDER.templar` em `sheet.ts`); regenerar do zero requer 2 passos:
+
+```sh
+pip install pillow numpy
+npm run pack:templar-parts   # tools/extract_parts.py -> public/packs/templar-v5/parts/*.png + manifest.json
+npm run pack:templar-v5      # tools/build_templar_v5.mjs -> sheet.png, *.png por ação, icons/, thumbs/, atlas.json
+```
+
+O segundo passo roda o compositor de verdade (`compose.ts` + `poses.ts`), o
+mesmo código que o app usa ao vivo — não existe um caminho de renderização
+separado só para gerar os arquivos estáticos. Testes: `node --experimental-strip-types --test src/lib/spriteforge/templar-v5.test.ts`
+(também incluído em `npm test`).

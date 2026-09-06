@@ -17,7 +17,9 @@
     "typecheck": "tsc --noEmit",
     "check:auth": "node scripts/check-auth-invariant.mjs",
     "pack:templar": "python3 tools/build_templar_v4.py tools/reference/templar-ref-sheet.jpg public/packs/templar-v4",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/lib/spriteforge/templar-v4.test.ts",
+    "pack:templar-parts": "python3 tools/extract_parts.py tools/reference/templar-ref-sheet.jpg public/packs/templar-v5",
+    "pack:templar-v5": "node --experimental-strip-types tools/build_templar_v5.mjs",
+    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/lib/spriteforge/templar-v4.test.ts src/lib/spriteforge/templar-v5.test.ts",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

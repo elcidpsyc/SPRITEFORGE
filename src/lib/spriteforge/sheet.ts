@@ -11,9 +11,11 @@ import {
   type ActionId,
   type Direction,
 } from "./contract";
+import { composeFrame, type PartAnchors, type PartLayerId, type PartSet } from "./compose";
+import { poseForCompose } from "./poses";
 import { blit, Pix, renderFrame } from "./render";
 import { getCharacter } from "./roster";
-import type { Character } from "./types";
+import type { Character, PartsManifest } from "./types";
 
 export type SheetBundle = {
   id: string;
@@ -236,6 +238,124 @@ export async function loadPackedCharacter(id: string): Promise<SheetBundle | nul
   return bundle;
 }
 
+/**
+ * Ids whose pack ships paper-doll parts (parts/manifest.json) instead of, or
+ * ahead of, flat PNG frames — buildSheet composes these with composeFrame().
+ * templar-v5's tests (templar-v5.test.ts) all pass, so templar is wired here
+ * ahead of the templar-v4 PNG pack (still kept as the fallback below).
+ */
+const PARTS_FOLDER: Record<string, string> = { templar: "templar-v5" };
+
+const manifestCache = new Map<string, PartsManifest>();
+const partsCache = new Map<string, Record<Direction, { parts: PartSet; anchors: PartAnchors }>>();
+
+export function getCachedPartsManifest(id: string): PartsManifest | null {
+  return manifestCache.get(id) ?? null;
+}
+
+/** Raw parts + anchors per direction, for UIs that want to recompose a live
+ * preview (e.g. toggling weapon/shield) without moving the pivot. */
+export function getCachedParts(
+  id: string,
+): Record<Direction, { parts: PartSet; anchors: PartAnchors }> | null {
+  return partsCache.get(id) ?? null;
+}
+
+async function fetchPartsManifest(folder: string): Promise<PartsManifest | null> {
+  try {
+    const res = await fetch(`/packs/${folder}/parts/manifest.json?v=5`);
+    if (!res.ok) return null;
+    return (await res.json()) as PartsManifest;
+  } catch {
+    return null;
+  }
+}
+
+async function loadPartSet(
+  folder: string,
+  manifest: PartsManifest,
+  direction: Direction,
+): Promise<{ parts: PartSet; anchors: PartAnchors }> {
+  const dirEntry = manifest.directions[direction];
+  const parts: PartSet = {};
+  const anchors: PartAnchors = {};
+  await Promise.all(
+    (Object.keys(dirEntry) as PartLayerId[]).map(async (layer) => {
+      const entry = dirEntry[layer];
+      if (!entry.bbox) return; // e.g. templar's down.cape: no geometry to load
+      parts[layer] = await pixFromUrl(`/packs/${folder}/${entry.file}?v=5`);
+      anchors[layer] = entry.anchor;
+    }),
+  );
+  const vfxEntries = manifest.vfx[direction] ?? [];
+  if (vfxEntries.length > 0) {
+    const vfx: Record<number, Pix> = {};
+    await Promise.all(
+      vfxEntries.map(async (e) => {
+        vfx[e.frame] = await pixFromUrl(`/packs/${folder}/${e.file}?v=5`);
+      }),
+    );
+    parts.vfx = vfx;
+  }
+  return { parts, anchors };
+}
+
+export async function loadComposedCharacter(id: string): Promise<SheetBundle | null> {
+  const folder = PARTS_FOLDER[id];
+  if (!folder) return null;
+  const hit = packed.get(id);
+  if (hit) return hit;
+  const manifest = await fetchPartsManifest(folder);
+  if (!manifest) return null;
+  manifestCache.set(id, manifest);
+
+  const byDirection = {} as Record<Direction, { parts: PartSet; anchors: PartAnchors }>;
+  await Promise.all(
+    DIRECTIONS.map(async (d) => {
+      byDirection[d] = await loadPartSet(folder, manifest, d);
+    }),
+  );
+  partsCache.set(id, byDirection);
+
+  const master = new Pix(MASTER_WIDTH, MASTER_HEIGHT);
+  const perAction = {} as Record<ActionId, Pix>;
+  ACTIONS.forEach((action, actionIndex) => {
+    const actionSheet = new Pix(ACTION_SHEET_WIDTH, ACTION_SHEET_HEIGHT);
+    const frames = ACTION_META[action].frames;
+    DIRECTIONS.forEach((dir, dirIndex) => {
+      const { parts, anchors } = byDirection[dir];
+      for (let f = 0; f < MASTER_COLS; f++) {
+        if (f >= frames) continue;
+        const pose = poseForCompose(action, f);
+        const cell = composeFrame(parts, dir, pose, anchors);
+        const dx = f * CELL;
+        const dyAction = dirIndex * CELL;
+        const dyMaster = (actionIndex * 4 + dirIndex) * CELL;
+        blit(actionSheet, cell, dx, dyAction);
+        blit(master, cell, dx, dyMaster);
+      }
+    });
+    perAction[action] = actionSheet;
+  });
+
+  const idle = composeFrame(
+    byDirection.down.parts,
+    "down",
+    poseForCompose("guard", 0),
+    byDirection.down.anchors,
+  );
+  const iconSrc = crop(idle, 16, 8, 32, 32);
+  let filled = 0;
+  for (let i = 3; i < iconSrc.data.length; i += 4) if (iconSrc.data[i]! > 20) filled++;
+  const icon32 = filled > 40 ? iconSrc : crop(idle, 16, 12, 32, 32);
+
+  const bundle: SheetBundle = { id, master, perAction, icon32 };
+  packed.set(id, bundle);
+  cache.delete(id);
+  notifyPack();
+  return bundle;
+}
+
 export function clearSheetCache() {
   cache.clear();
 }
@@ -262,5 +382,8 @@ if (import.meta.hot) {
 }
 
 if (typeof window !== "undefined") {
-  void loadPackedCharacter("templar");
+  void (async () => {
+    const viaParts = await loadComposedCharacter("templar");
+    if (!viaParts) await loadPackedCharacter("templar");
+  })();
 }
