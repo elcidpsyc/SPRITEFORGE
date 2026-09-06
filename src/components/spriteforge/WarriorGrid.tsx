@@ -64,7 +64,7 @@ function CardPortrait({ id }: { id: string }) {
   if (id === "templar") {
     return (
       <img
-        src="/packs/templar-v3/thumbs/idle_down.png?v=4"
+        src="/packs/templar-v4/thumbs/idle_down.png?v=5"
         alt=""
         width={128}
         height={128}

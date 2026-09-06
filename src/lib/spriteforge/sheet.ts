@@ -177,12 +177,12 @@ const cache = new Map<string, SheetBundle>();
 
 /** Characters that ship a real PNG pack under /packs/<folder>/. */
 export const PACKED_IDS = new Set(["templar"]);
-/** v3 lives beside v1/v2. Don't overwrite /packs/templar/ until the owner signs off. */
-const PACK_FOLDER: Record<string, string> = { templar: "templar-v3" };
+/** v4 lives beside v1/v2/v3. Don't overwrite /packs/templar/ until the owner signs off. */
+const PACK_FOLDER: Record<string, string> = { templar: "templar-v4" };
 
 function packUrl(id: string, file: string): string {
   const folder = PACK_FOLDER[id] ?? id;
-  return `/packs/${folder}/${file}?v=4`;
+  return `/packs/${folder}/${file}?v=5`;
 }
 const packed = new Map<string, SheetBundle>();
 const packListeners = new Set<() => void>();

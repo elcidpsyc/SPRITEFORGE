@@ -104,6 +104,8 @@ export type Atlas = {
   icons: { hud32: string; hud32svg: string };
   stats: Character["stats"];
   survivorSkill: Character["survivorSkill"];
+  /** Provenance for packs built from a reference sheet (e.g. templar-v4). Not used by the app. */
+  source?: { reference: string; builder: string; palette: [number, number, number][] };
 };
 
 export type Pose = {

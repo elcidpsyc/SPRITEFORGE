@@ -1,0 +1,199 @@
+{
+  "specVersion": "1.0",
+  "id": "templar",
+  "name": "Cavaleiro Templário",
+  "title": "Guardião das Cruzadas",
+  "cell": {
+    "w": 64,
+    "h": 64
+  },
+  "pivot": {
+    "x": 32,
+    "y": 56
+  },
+  "hitbox": {
+    "x": 22,
+    "y": 20,
+    "w": 20,
+    "h": 36
+  },
+  "directions": [
+    "down",
+    "up",
+    "right",
+    "left"
+  ],
+  "sheet": {
+    "master": "sheet.png",
+    "layout": "actionsStacked",
+    "cols": 8,
+    "actionOrder": [
+      "walk",
+      "run",
+      "attack",
+      "guard",
+      "dash",
+      "hurt",
+      "death"
+    ],
+    "perAction": {
+      "walk": "walk.png",
+      "run": "run.png",
+      "attack": "attack.png",
+      "guard": "guard.png",
+      "dash": "dash.png",
+      "hurt": "hurt.png",
+      "death": "death.png"
+    }
+  },
+  "animations": {
+    "walk": {
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "holdLast": false
+    },
+    "run": {
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "holdLast": false
+    },
+    "attack": {
+      "frames": 8,
+      "fps": 10,
+      "loop": false,
+      "holdLast": false,
+      "hitFrame": 3
+    },
+    "guard": {
+      "frames": 6,
+      "fps": 8,
+      "loop": false,
+      "holdLast": true
+    },
+    "dash": {
+      "frames": 6,
+      "fps": 14,
+      "loop": false,
+      "holdLast": false
+    },
+    "hurt": {
+      "frames": 6,
+      "fps": 10,
+      "loop": false,
+      "holdLast": false
+    },
+    "death": {
+      "frames": 8,
+      "fps": 8,
+      "loop": false,
+      "holdLast": true
+    }
+  },
+  "icons": {
+    "hud32": "icons/idle_32.png",
+    "hud32svg": "icons/idle_32.svg"
+  },
+  "stats": {
+    "hp": 610,
+    "atk": 64,
+    "def": 58,
+    "spd": 3.6
+  },
+  "survivorSkill": {
+    "name": "Baluarte Implacável",
+    "desc": "Torna-se invulnerável por 3s e repele ataques."
+  },
+  "source": {
+    "reference": "IMG_20260905_161641_472.jpg",
+    "builder": "build_templar_v4.py",
+    "palette": [
+      [
+        18,
+        14,
+        14
+      ],
+      [
+        58,
+        60,
+        66
+      ],
+      [
+        104,
+        108,
+        116
+      ],
+      [
+        150,
+        156,
+        164
+      ],
+      [
+        206,
+        212,
+        220
+      ],
+      [
+        240,
+        236,
+        224
+      ],
+      [
+        206,
+        198,
+        180
+      ],
+      [
+        128,
+        102,
+        74
+      ],
+      [
+        190,
+        44,
+        48
+      ],
+      [
+        140,
+        26,
+        34
+      ],
+      [
+        92,
+        16,
+        24
+      ],
+      [
+        218,
+        172,
+        60
+      ],
+      [
+        150,
+        110,
+        34
+      ],
+      [
+        118,
+        40,
+        42
+      ],
+      [
+        28,
+        26,
+        30
+      ],
+      [
+        232,
+        240,
+        255
+      ],
+      [
+        160,
+        176,
+        200
+      ]
+    ]
+  }
+}

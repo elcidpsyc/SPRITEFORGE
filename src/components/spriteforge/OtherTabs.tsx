@@ -129,7 +129,7 @@ export function TabMontagem() {
         <Panel className="flex flex-col items-center gap-3">
           {character.id === "templar" ? (
             <img
-              src="/packs/templar-v3/thumbs/idle_down.png?v=4"
+              src="/packs/templar-v4/thumbs/idle_down.png?v=5"
               alt=""
               width={192}
               height={192}
