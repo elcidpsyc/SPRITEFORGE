@@ -15,6 +15,7 @@ import { generateConceptArt } from "@/lib/spriteforge/gerador";
 import { renderFrame } from "@/lib/spriteforge/render";
 import { useStudio } from "@/lib/spriteforge/store";
 import { Badge, GhostBtn, GoldBtn, Panel, RARITY_CLASS } from "./bits";
+import { PixellabBatchPanel } from "./PixellabBatchPanel";
 import { Portrait } from "./PixelView";
 
 function Soon({
@@ -85,6 +86,12 @@ export function TabGerador() {
           IA só como rascunho de conceito. Guarda-rail: célula 64×64, pivot (32, 56), paleta ≤ 24
           cores. Source of truth continua sendo o paper-doll.
         </p>
+        <p className="mt-2 max-w-2xl rounded-md border border-gold/30 bg-gold/5 p-2 font-sans text-xs text-muted">
+          <strong className="text-fg">Rascunho conceitual.</strong> Este gerador usa{" "}
+          <code className="font-mono">create-image-pixflux</code>: imagem única, sem direções e sem
+          animação. <strong className="text-fg">Não alimenta o pipeline de sprites.</strong> A
+          geração que alimenta o pipeline é a de personagem, no painel de lote abaixo.
+        </p>
       </header>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
@@ -148,6 +155,8 @@ export function TabGerador() {
           <p>4 dirs · 7 ações</p>
         </Panel>
       </div>
+
+      <PixellabBatchPanel />
     </div>
   );
 }
