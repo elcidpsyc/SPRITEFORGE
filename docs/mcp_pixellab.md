@@ -217,3 +217,49 @@ não é parte do produto. O pipeline segue pela REST sem prejuízo, exatamente c
 
 **Nenhum segredo foi impresso, commitado ou registrado em qualquer ponto.** O único valor de token
 que passou pela rede nesta investigação foi a sentinela falsa `SENTINELA-FALSA-XYZ`.
+
+---
+
+## ADENDO (2026-09-07, mesma data) — o veredito mudou depois de o MCP aparecer na sessão
+
+Depois de o relatório acima ser commitado, o servidor MCP do PixelLab **passou a aparecer nesta
+sessão** com as 84 tools registradas. Testei com a chamada gratuita `get_balance`:
+
+```
+mcp__pixellab__get_balance  →  Error calling tool 'get_balance': 401: Invalid API token
+```
+
+Isso permite fechar o diagnóstico, porque os três modos de falha do servidor são
+**distinguíveis** — verificado com curl:
+
+| Header enviado | Resposta do PixelLab |
+|---|---|
+| nenhum | `401: Missing Authorization header` |
+| `Bearer ` (variável expandida para vazio) | `401: Missing Authorization header` |
+| `Bearer ${PIXELLAB_API_KEY}` **literal** | **`401: Invalid API token`** |
+
+A tool MCP devolveu **`Invalid API token`** — a assinatura do header **literal**. Como
+`PIXELLAB_API_KEY` não existe neste ambiente, o valor enviado só pode ter sido a string
+`${PIXELLAB_API_KEY}` sem expandir.
+
+### Correção ao §3
+
+O relatório acima está certo sobre o **CLI** (`claude mcp add`/`claude mcp list`): ali a expansão
+funciona, provado com a sentinela. Mas o cliente MCP que executa **as minhas tools** neste
+ambiente remoto é outro — e **nele a expansão não acontece**. Ou seja: **o bug que você avisou é
+real, só que na camada do harness remoto, não na do CLI.**
+
+Alternativa menos provável, registrada por honestidade: o harness poderia ter um token próprio
+que por acaso é inválido/expirado. Não dá para distinguir os dois casos de dentro daqui sem ver o
+header enviado. O que é certo é que **não é** "header ausente" nem "variável vazia" — esses dois
+dão outra mensagem.
+
+### Veredito revisado
+
+> **MCP conecta e descobre, mas não executa.** O transporte está de pé e as 84 tools estão
+> registradas; toda chamada que gasta ou lê dados da conta devolve 401. Continua **não
+> bloqueante**: o pipeline vai pela REST v2, que a FASE 0 provou funcionar com a chave da Vercel.
+
+O que destrava, sem terminal: provisionar `PIXELLAB_API_KEY` no ambiente do Claude Code on the
+web. Se mesmo assim o 401 persistir, a causa é a não-expansão no harness, e aí a saída é a
+Tentativa B (stdio, bloco `env`) — que fica pendente para esse cenário.
