@@ -4,3 +4,6 @@ node_modules/
 .env
 .env.*
 .vercel/
+
+# Quarantined assets are QA output, regenerated on every contract run.
+assets/quarantine/
