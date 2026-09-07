@@ -57,8 +57,17 @@ test("non-.sql entries are dropped (readdir also yields the auth/ directory)", (
 });
 
 test("the auth schema ships outside the globbed directory", () => {
+  // What this guards is that 0001_auth.sql stays under migrations/auth/ and is
+  // never picked up by the top-level glob. It used to assert the top level was
+  // empty of .sql entirely, which only held while the app had no schema of its
+  // own; migrate.mjs tells you to add yours as 0002_*.sql, so the app's own
+  // migrations belong here and the auth one still must not.
   const migrationsDir = join(projectRoot(), "migrations");
-  assert.deepEqual(pendingMigrations(readdirSync(migrationsDir), []), []);
+  const globbed = pendingMigrations(readdirSync(migrationsDir), []).map((m) => m.name);
+  assert.ok(
+    !globbed.includes("0001_auth.sql"),
+    "0001_auth.sql must live only in migrations/auth/, not at the top level",
+  );
   assert.ok(readdirSync(join(migrationsDir, "auth")).includes("0001_auth.sql"));
 });
 
