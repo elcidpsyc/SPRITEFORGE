@@ -1,11 +1,20 @@
 import type { ReactNode } from "react";
-import { useMemo } from "react";
-import { Mountain, Skull, Sparkles, Layers, type LucideIcon } from "lucide-react";
-import { LAYERS } from "@/lib/spriteforge/contract";
+import { useMemo, useState } from "react";
+import {
+  AlertTriangle,
+  Loader2,
+  Mountain,
+  Skull,
+  Sparkles,
+  Layers,
+  type LucideIcon,
+} from "lucide-react";
+import { CELL, LAYERS } from "@/lib/spriteforge/contract";
 import { EQUIPMENT, FAMILY_LABEL, RARITY_LABEL } from "@/lib/spriteforge/equipment";
+import { generateConceptArt } from "@/lib/spriteforge/gerador";
 import { renderFrame } from "@/lib/spriteforge/render";
 import { useStudio } from "@/lib/spriteforge/store";
-import { Badge, GhostBtn, Panel, RARITY_CLASS } from "./bits";
+import { Badge, GhostBtn, GoldBtn, Panel, RARITY_CLASS } from "./bits";
 import { Portrait } from "./PixelView";
 
 function Soon({
@@ -40,31 +49,95 @@ function Soon({
   );
 }
 
+const CELL_PREVIEW_SIZE = CELL * 3;
+
 export function TabGerador() {
+  const [prompt, setPrompt] = useState(
+    "Cavaleiro templário, túnica branca, cruz vermelha, capa escarlate, elmo de fenda, top-down 64×64…",
+  );
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<{ dataUrl: string; usd: number | null } | null>(null);
+
+  const canGenerate = status !== "loading" && prompt.trim().length >= 3;
+
+  async function handleGenerate() {
+    setStatus("loading");
+    setError(null);
+    try {
+      const res = await generateConceptArt({ data: { prompt } });
+      setResult({ dataUrl: res.dataUrl, usd: res.usd });
+      setStatus("idle");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Falha ao gerar o rascunho.");
+      setStatus("error");
+    }
+  }
+
   return (
-    <Soon
-      icon={Sparkles}
-      title="Gerador de Imagem"
-      copy="IA só como rascunho de conceito. Guarda-rail: célula 64×64, pivot (32, 56), paleta ≤ 24 cores. Source of truth continua sendo o paper-doll."
-    >
+    <div className="flex flex-col gap-6">
+      <header>
+        <p className="font-sans text-[10px] font-semibold tracking-[0.18em] text-gold uppercase">
+          PixelLab
+        </p>
+        <h2 className="font-display text-3xl text-fg">Gerador de Imagem</h2>
+        <p className="mt-1 max-w-2xl font-sans text-sm text-muted">
+          IA só como rascunho de conceito. Guarda-rail: célula 64×64, pivot (32, 56), paleta ≤ 24
+          cores. Source of truth continua sendo o paper-doll.
+        </p>
+      </header>
+
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <Panel className="flex flex-col gap-3">
           <label className="font-sans text-[11px] tracking-wider text-muted uppercase">
             Prompt de conceito
           </label>
           <textarea
-            disabled
             rows={6}
-            className="resize-none rounded-md border border-border bg-bg-deep p-3 font-sans text-sm text-muted"
-            defaultValue="Cavaleiro templário, túnica branca, cruz vermelha, capa escarlate, elmo de fenda, top-down 64×64…"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="resize-none rounded-md border border-border bg-bg-deep p-3 font-sans text-sm text-fg"
           />
-          <button
-            type="button"
-            disabled
-            className="min-h-10 rounded-md border border-gold/40 bg-gold/10 px-4 font-sans text-sm text-gold opacity-60"
-          >
-            Gerar rascunho (em breve)
-          </button>
+          <div className="flex items-center gap-3">
+            <GoldBtn onClick={handleGenerate} disabled={!canGenerate}>
+              {status === "loading" ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Sparkles className="size-4" />
+              )}
+              {status === "loading" ? "Gerando…" : "Gerar rascunho"}
+            </GoldBtn>
+            {result?.usd != null && (
+              <span className="font-mono text-[11px] text-subtle">
+                custo ~US$ {result.usd.toFixed(3)}
+              </span>
+            )}
+          </div>
+          {status === "error" && error && (
+            <p className="flex items-start gap-2 rounded-md border border-hard/40 bg-hard/10 p-2 font-sans text-xs text-hard">
+              <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
+              {error}
+            </p>
+          )}
+          {result && (
+            <div className="flex flex-col items-center gap-2 rounded-md border border-border bg-bg-deep p-4">
+              <img
+                src={result.dataUrl}
+                alt="Rascunho de conceito gerado por IA"
+                width={CELL_PREVIEW_SIZE}
+                height={CELL_PREVIEW_SIZE}
+                className="pixelated"
+                style={{
+                  imageRendering: "pixelated",
+                  width: CELL_PREVIEW_SIZE,
+                  height: CELL_PREVIEW_SIZE,
+                }}
+              />
+              <p className="font-sans text-xs text-muted">
+                Rascunho de conceito — não alimenta o paper-doll automaticamente.
+              </p>
+            </div>
+          )}
         </Panel>
         <Panel className="flex flex-col gap-2 font-mono text-xs text-muted">
           <p className="font-sans text-[10px] tracking-wider text-gold uppercase">Guarda-rail</p>
@@ -75,7 +148,7 @@ export function TabGerador() {
           <p>4 dirs · 7 ações</p>
         </Panel>
       </div>
-    </Soon>
+    </div>
   );
 }
 
